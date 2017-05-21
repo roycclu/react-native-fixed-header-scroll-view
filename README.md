@@ -3,7 +3,7 @@
 A `<FixedHeaderScrollView>` wrapper that
 
 - Takes a ScrollView-like component
-- Takes a header to fix to the top of the ScrollView
+- Takes a header and makes it sticky
 - Works on iOS and Android
 
 ## Add it to your project
