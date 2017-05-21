@@ -2,7 +2,7 @@
   "name": "react-native-fixed-header-scroll-view",
   "version": "0.1.1",
   "description": "Sticky header to a ScrollView-like component.",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/roycclu/react-native-fixed-header-scroll-view.git"
@@ -23,5 +23,5 @@
   "bugs": {
     "url": "https://github.com/roycclu/react-native-fixed-header-scroll-view/issues"
   },
-  "homepage": "https://github.com/roycclu/react-native-fixed-header-scroll-view",
+  "homepage": "https://github.com/roycclu/react-native-fixed-header-scroll-view"
 }
