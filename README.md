@@ -1,47 +1,62 @@
-# react-native-fixed-header-scroll-view
+# react-native-sticky-header-footer-scroll-view
 
-A `<FixedHeaderScrollView>` wrapper that
+A `<StickyHeaderFooterScrollView>` wrapper that
 
 - Takes a ScrollView-like component
-- Takes a header and makes it sticky
+- Takes a header and/or a footer and makes it sticky
 - Works on iOS and Android
 
 ## Add it to your project
 
 iOS and Android
 
-run `yarn add react-native-fixed-header-scroll-view`
+run `yarn add react-native-sticky-header-footer-scroll-view`
 
 or
 
-run `npm install react-native-fixed-header-scroll-view --save`
+run `npm install react-native-sticky-header-footer-scroll-view --save`
 
 Then:
 
 - Whenever you want to use it within React code you can: `import
-FixedHeaderScrollView from 'react-native-fixed-header-scroll-view';`
+StickyHeaderFooterScrollView from 'react-native-sticky-header-footer-scroll-view';`
 
 ## Demo
 
 ## Basic Usage
 
 ```
-import FixedHeaderScrollView from 'react-native-fixed-header-scroll-view';
+import StickyHeaderFooterScrollView from 'react-native-sticky-header-footer-scroll-view';
 
 //Inside of a component's render() method:
 render() {
   return (
-    <FixedHeaderScrollView
-      renderFixedHeader={() => (
-        <View style={{ height: 50, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>I'm a fixed header</Text>
+    <StickyHeaderFooterScrollView
+      renderStickyHeader={() => (
+        <View style={{ height: 50, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+          <Text>{`I'm a sticky header`}</Text>
+        </View>
+      )}
+      renderStickyFooter={() => (
+        <View style={{ height: 50, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderTopWidth: 1, borderTopColor: '#ccc'  }}>
+          <Text>{`I'm a sticky footer`}</Text>
         </View>
       )}
     >
-      <View style={{ height: 1500 }}>
+      <ScrollView style={{ height: 1200, backgroundColor: '#eee' }}>
         <Text>Scroll Me</Text>
-      </View>
-    </FixedHeaderScrollView>
+      </ScrollView>
+    </StickyHeaderFooterScrollView>
   )
 }
 ```
+
+## Example
+
+`cd example/StickyHeaderFooter`
+
+`yarn`
+
+`npm start`
+
+`react-native run-ios` or `react-native run-android`

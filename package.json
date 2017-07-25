@@ -1,7 +1,7 @@
 {
-  "name": "react-native-fixed-header-scroll-view",
+  "name": "react-native-sticky-header-footer-scroll-view",
   "version": "0.1.2",
-  "description": "Sticky header to a ScrollView-like component.",
+  "description": "Sticky header and footer to a ScrollView-like component.",
   "main": "src/index.js",
   "repository": {
     "type": "git",

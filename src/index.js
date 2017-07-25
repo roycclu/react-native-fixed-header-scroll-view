@@ -1,47 +1,75 @@
+/**
+ * @Author: Roy Lu 卢骋震 <roycclu>
+ * @Date:   2017-05-21T11:55:17+08:00
+ * @Last modified by:   roycclu
+ * @Last modified time: 2017-07-25T11:42:02+08:00
+ */
+
+
+
 import React, { Component } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, ViewPropTypes, ScrollView } from 'react-native';
 
 const { bool, func, number, string } = React.PropTypes;
 
 const window = Dimensions.get('window');
 
-// Properties accepted by `FixedHeaderScrollView`.
+const SCROLLVIEW_REF = 'ScrollView';
+
+// Properties accepted by `stickyHeaderScrollView`.
 const propTypes = {
-  renderFixedHeader: func,
+  renderStickyHeader: func,
+  renderStickyFooter: func,
   contentBackgroundColor: string,
-  contentContainerStyle: View.propTypes.style,
+  contentContainerStyle: ViewPropTypes.style,
 };
 
-class FixedHeaderScrollView extends Component {
+class StickyHeaderFooterScrollView extends Component {
   constructor(props) {
     super(props);
-    if (!props.renderFixedHeader) {
-      console.warn('Property `renderFixedHeader` must be set.');
-    }
-    this._bodyOffset = 0;
+    this._bodyOffsetTop = 0;
+    this._bodyHeight = 0;
+    this._bodyOffsetBottom = 0;
   }
 
   render() {
     const {
-      renderFixedHeader,
+      renderStickyHeader,
+      renderStickyFooter,
+      renderScrollComponent,
       contentBackgroundColor,
       contentContainerStyle,
       children,
     } = this.props;
 
-    const fixedHeader = this._renderFixedHeader(renderFixedHeader, {});
+    const stickyHeader = this._renderStickyHeader(renderStickyHeader, {});
+
+    const scrollElement = renderScrollComponent();
 
     const bodyComponent = this._wrapChildren(children, {});
 
+    const footerSpacer = this._renderFooterSpacer({ contentBackgroundColor });
+
+    const stickyFooter = this._renderStickyFooter(renderStickyFooter, {});
+
     return (
       <View>
-        {bodyComponent}
-        {fixedHeader}
+        {React.cloneElement(
+          scrollElement,
+          {
+            ref: SCROLLVIEW_REF,
+            scrollEventThrottle: 16,
+          },
+          bodyComponent,
+          footerSpacer
+        )}
+        {stickyHeader}
+        {stickyFooter}
       </View>
     );
   }
 
-  _renderFixedHeader(renderFixedHeader) {
+  _renderStickyHeader(renderStickyHeader) {
     return (
       <View
         style={[
@@ -53,15 +81,15 @@ class FixedHeaderScrollView extends Component {
         ]}
         onLayout={e => {
           const { nativeEvent: { layout: { height } } } = e;
-          if (this._bodyOffset !== height) {
+          if (this._bodyOffsetTop !== height) {
             this._bodyComponent.setNativeProps({
               style: { marginTop: height },
             });
-            this._bodyOffset = height;
+            this._bodyOffsetTop = height;
           }
         }}
       >
-        {renderFixedHeader()}
+        {renderStickyHeader()}
       </View>
     );
   }
@@ -72,19 +100,75 @@ class FixedHeaderScrollView extends Component {
     if (contentContainerStyle) containerStyles.push(contentContainerStyle);
 
     return (
-      <View style={containerStyles} ref={ref => (this._bodyComponent = ref)}>
+      <View
+        style={containerStyles}
+        ref={ref => (this._bodyComponent = ref)}
+        onLayout={e => {
+          const { nativeEvent: { layout: { height } } } = e;
+          if (this._bodyHeight !== height) {
+            this._bodyHeight = height;
+          }
+        }}
+      >
         {children}
       </View>
     );
   }
+
+  _renderFooterSpacer({ contentBackgroundColor }) {
+    return (
+      <View
+        ref={ref => (this._footerSpacerComponent = ref)}
+        style={{ backgroundColor: contentBackgroundColor }}
+      />
+    );
+  }
+
+  _renderStickyFooter(renderStickyFooter) {
+    if (renderStickyFooter == null) return null;
+    return (
+      <View
+        style={[
+          {
+            position: 'absolute',
+            bottom: 0,
+            width: Dimensions.get('window').width,
+          },
+        ]}
+        onLayout={e => {
+          const { nativeEvent: { layout: { height } } } = e;
+          if (this._bodyHeight < (window.height - height - this._bodyOffsetTop)) {
+            const footerSpacerHeight = Math.max(
+              0,
+              window.height - height - this._bodyOffsetTop
+            );
+            this._footerSpacerComponent.setNativeProps({
+              style: { height: footerSpacerHeight },
+            });
+          }
+          if (this._bodyOffsetBottom !== height) {
+            this._bodyComponent.setNativeProps({
+              style: { marginBottom: height },
+            });
+            this._bodyOffsetBottom = height;
+          }
+        }}
+      >
+        {renderStickyFooter()}
+      </View>
+    );
+  }
+
 }
 
-FixedHeaderScrollView.propTypes = propTypes;
+StickyHeaderFooterScrollView.propTypes = propTypes;
 
-FixedHeaderScrollView.defaultProps = {
-  renderFixedHeader: null,
+StickyHeaderFooterScrollView.defaultProps = {
+  renderStickyHeader: null,
+  renderStickyFooter: null,
+  renderScrollComponent: props => <ScrollView {...props} />,
   contentContainerStyle: null,
-  contentBackgroundColor: '#FFF',
+  contentBackgroundColor: 'transparent',
 };
 
-module.exports = FixedHeaderScrollView;
+module.exports = StickyHeaderFooterScrollView;
