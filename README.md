@@ -1,10 +1,12 @@
 # react-native-sticky-header-footer-scroll-view
-
 A `<StickyHeaderFooterScrollView>` wrapper that
 
-- Takes a ScrollView-like component
+- Takes any component
 - Takes a header and/or a footer and makes it sticky
 - Works on iOS and Android
+
+## Renamed
+This projet has been renamed to react-native-sticky-header-footer-scroll-view. Please install using react-native-sticky-header-footer-scroll-view
 
 ## Add it to your project
 
