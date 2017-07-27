@@ -2,7 +2,7 @@
  * @Author: Roy Lu 卢骋震 <roycclu>
  * @Date:   2017-05-21T11:55:17+08:00
  * @Last modified by:   roycclu
- * @Last modified time: 2017-07-25T11:42:02+08:00
+ * @Last modified time: 2017-07-27T09:02:11+08:00
  */
 
 
@@ -24,7 +24,7 @@ const propTypes = {
   contentContainerStyle: ViewPropTypes.style,
 };
 
-class StickyHeaderFooterScrollView extends Component {
+class FixedHeaderScrollView extends Component {
   constructor(props) {
     super(props);
     this._bodyOffsetTop = 0;
@@ -161,9 +161,9 @@ class StickyHeaderFooterScrollView extends Component {
 
 }
 
-StickyHeaderFooterScrollView.propTypes = propTypes;
+FixedHeaderScrollView.propTypes = propTypes;
 
-StickyHeaderFooterScrollView.defaultProps = {
+FixedHeaderScrollView.defaultProps = {
   renderStickyHeader: null,
   renderStickyFooter: null,
   renderScrollComponent: props => <ScrollView {...props} />,
@@ -171,4 +171,4 @@ StickyHeaderFooterScrollView.defaultProps = {
   contentBackgroundColor: 'transparent',
 };
 
-module.exports = StickyHeaderFooterScrollView;
+module.exports = FixedHeaderScrollView;
