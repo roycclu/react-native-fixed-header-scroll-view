@@ -9,8 +9,7 @@
 
 import React, { Component } from 'react';
 import { Dimensions, View, ViewPropTypes, ScrollView } from 'react-native';
-
-const { bool, func, number, string } = React.PropTypes;
+import { bool, func, number, string } from 'prop-types'
 
 const window = Dimensions.get('window');
 
